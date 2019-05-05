@@ -1,0 +1,36 @@
+INPUT: set di Esame PARTENZA
+	   numero di crediti m
+	   
+OUTPUT: set di Esame, sottoisieme di quello di partenza per cui
+			somma Esame.crediti == m
+			media Esame.voto è MAX
+			
+STRATEGIA: costruire un algoritmo che genera tutti i possibili sottoinsiemi di uno dato.
+			(l'ordine degli esami non è improtante!)
+	
+	Approccio 1: genero l'insieme decidendo, corso per corso, se esso fa parte dell'insieme.
+				 livello L della ricorsione - quale corso sto decidendo se includere o meno nell'insieme soluzione
+				 soluzione parziale - un sottoinsieme composto dai corsi tra 0 e L-1
+				 generazione del sotto-problema è decidere se inserire l'Esame[L] oppure no. 
+				 	1.sotto-problema = soluzione parziale (non aggiungo)
+				 	2.sotto-problema = soluzione parziale + {L}
+				 casi terminali:
+				 	1.L=max - non ci sono più corsi (non posso più aggiungere niente)
+				 		1.1 somma crediti == m => calcolo la media
+				 		1.2 somma crediti != m => niente
+				 	2.somma crediti = m => valuta la media e non genera altri sotto-problemi
+				 	3.sommacrediti > m => esci! non genera sotto-problemi
+				 	
+				 	Se somma crediti != m => return;
+				 	Se somma crediti == m => valuta media: è migliore della migliore media già nota? Se sì => soluzione corrente diventa il best
+				 	
+				 complessità algoritmo: 2^N, N=numero di esami
+				 	
+	Approccio 2: ad ogni livello aggiungo un corso. Devo decidere quale!
+				 soluzione parziale di livello L - un insieme di L corsi
+				 generazione del sotto-problema - aggiungere un nuovo corso all'insieme esistente. Per tutti i corsi (i) possibili (non ancora nell'insieme)
+				 								  sotto-problema = parziale + corso(i) 
+				 casi terminali - vedi sopra. 
+				 
+				 complessità algoritmo: N!, N=numero di esami
+				 accortezza: permettere solo sequenze CRESCENTI di esami nella soluzone parziale. In questo modo complessità = 2^N
